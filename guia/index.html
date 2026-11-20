@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>klingaimcp — Kling AI por MCP e CLI</title>
+<meta name="description" content="Guia de integração do Kling AI via MCP e CLI: gere imagens e vídeos por linha de comando ou assistente de IA, automatize pipelines e dublagem com voz clonada.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0c10; --bg2:#14141b; --card:#16161e; --line:#272730;
+    --txt:#e9e9ee; --mut:#9a9aa6; --amb:#E2A23B; --amb2:#f0c070; --sky:#38bdf8; --pro:#cbd5e1;
+    color-scheme:dark;
+  }
+  body.light{
+    --bg:#f6f7f9; --bg2:#eceef2; --card:#ffffff; --line:#e1e3ea;
+    --txt:#1a1a22; --mut:#5b5b68; --amb:#b9791d; --amb2:#a16207; --sky:#0369a1; --pro:#b45309;
+    color-scheme:light;
+  }
+  body.light .hero .glow{opacity:.5}
+  body.light pre{background:#0e0e14;color:#d6d6e0}
+  body.light pre .c{color:#8a8a98}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.65 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:Sora,sans-serif;line-height:1.15;margin:0}
+  a{color:var(--amb);text-decoration:none}
+  code,pre{font-family:"JetBrains Mono",monospace}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 22px}
+  .mut{color:var(--mut)} .amb{color:var(--amb)}
+  .chip{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--amb);font-weight:600;font-family:Sora}
+  nav{position:sticky;top:0;z-index:30;backdrop-filter:blur(12px);background:rgba(12,12,16,.78);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;gap:22px;height:60px}
+  nav .brand{display:flex;align-items:center;gap:8px;font-family:Sora;font-weight:800;letter-spacing:-.02em;color:var(--amb)}
+  nav .brand .emoji{font-size:1.25rem}
+  nav .sep{color:var(--mut);opacity:.45}
+  nav .inema{color:var(--sky);font-weight:600;font-size:.88rem;font-family:Sora}
+  nav .inema:hover{filter:brightness(1.15)}
+  nav .pro{color:var(--pro);font-weight:600;font-size:.88rem;font-family:Sora}
+  nav .pro:hover{filter:brightness(1.15)}
+  nav .clubpro{display:inline-flex;align-items:center;gap:6px}
+  nav .links{margin-left:auto;display:flex;align-items:center;gap:20px;font-size:.92rem}
+  nav .links a.sec{color:var(--mut)} nav .links a.sec:hover{color:var(--txt)}
+  .tgl{background:var(--bg2);border:1px solid var(--line);color:var(--txt);width:38px;height:38px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:1.05rem}
+  .tgl:hover{border-color:var(--amb)}
+  .btn{display:inline-block;background:var(--amb);color:#1a1206;font-weight:600;padding:.6em 1.05em;border-radius:10px;font-family:Sora}
+  .btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line)}
+  @media(max-width:760px){nav .links a.sec{display:none}}
+  @media(max-width:540px){nav .links a.btn{display:none} nav .wrap{gap:12px}}
+  .grid>*,.step>div{min-width:0}
+  .hero{overflow:hidden}
+  .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+  .hero .glow{position:absolute;inset:-40% -20% auto auto;width:70%;height:600px;background:radial-gradient(closest-side,rgba(226,162,59,.22),transparent 70%);pointer-events:none}
+  .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding:74px 22px}
+  .hero h1{font-size:clamp(2.2rem,5vw,3.5rem);font-weight:800;letter-spacing:-.025em}
+  .hero p.lead{font-size:1.18rem;color:var(--mut);margin:1.1em 0 1.6em;max-width:34ch}
+  .hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .hero figure{margin:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 80px -30px #000}
+  .hero figure img{width:100%;display:block}
+  @media(max-width:780px){.hero .wrap{grid-template-columns:1fr;padding:48px 22px}}
+  section{padding:62px 0;border-bottom:1px solid var(--line)}
+  section h2{font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:800;letter-spacing:-.02em}
+  section .sub{color:var(--mut);margin:.6em 0 2em;max-width:62ch}
+  .grid{display:grid;gap:16px}
+  .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)} .g2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:820px){.g3,.g4{grid-template-columns:1fr 1fr}}
+  @media(max-width:540px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .card h3{font-size:1.05rem;margin-bottom:.4em}
+  .card p{color:var(--mut);font-size:.92rem;margin:0}
+  .num{display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;border-radius:8px;background:rgba(226,162,59,.14);color:var(--amb);font-family:Sora;font-weight:800;font-size:.9rem;margin-bottom:.7em}
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+  .flow span{background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:.45em .9em;font-size:.85rem;font-family:Sora;font-weight:600}
+  .flow .arr{color:var(--amb);border:none;background:none;padding:0 .1em}
+  pre{background:#0a0a0e;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;font-size:.86rem;line-height:1.6;color:#d6d6e0}
+  pre .c{color:#6f6f7c} pre .k{color:var(--amb2)} pre .s{color:#9ece6a}
+  .step{display:grid;grid-template-columns:46px 1fr;gap:16px;margin-bottom:26px}
+  .step .b{width:46px;height:46px;border-radius:12px;background:var(--amb);color:#1a1206;font-family:Sora;font-weight:800;font-size:1.25rem;display:flex;align-items:center;justify-content:center}
+  .step h3{font-size:1.12rem;margin-bottom:.3em}
+  .step p{color:var(--mut);margin:.2em 0 .7em}
+  .ex{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:680px){.ex{grid-template-columns:1fr}}
+  .ex figure{margin:0;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+  .ex figure img{width:100%;display:block}
+  .ex figcaption{padding:12px 14px;font-size:.88rem;color:var(--mut);background:var(--card)}
+  .phase{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}
+  .phase:last-child{border:none}
+  .phase .tag{flex:0 0 92px;font-family:Sora;font-weight:800;color:var(--amb)}
+  .phase .d strong{display:block;margin-bottom:.2em}
+  .phase .d span{color:var(--mut);font-size:.92rem}
+  footer{padding:46px 0;text-align:center;color:var(--mut);font-size:.9rem}
+  .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:.3em .8em;font-size:.78rem;color:var(--mut);margin:0 4px}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a class="brand" href="#top"><span class="emoji">🎬</span> klingaimcp</a>
+  <span class="sep">|</span>
+  <span class="clubpro">
+    <a class="inema" href="https://inema.club" target="_blank" rel="noopener">INEMA.CLUB</a>
+    <span class="sep">-</span>
+    <a class="pro" href="https://inema.pro" target="_blank" rel="noopener">PRO</a>
+  </span>
+  <div class="links">
+    <a class="sec" href="#novidades">Kling 4.0</a>
+    <a class="sec" href="#oque">O que é</a>
+    <a class="sec" href="#fluxo">Como funciona</a>
+    <a class="sec" href="#guia">Guia de uso</a>
+    <a class="sec" href="#exemplos">Exemplos</a>
+    <a class="sec" href="#roadmap">Roadmap</a>
+    <button class="tgl" id="themeToggle" aria-label="Alternar tema" title="Alternar tema">🌙</button>
+    <a class="btn" href="https://github.com/inematds/klingaimcp" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</div></nav>
+
+<header class="hero" id="top">
+  <div class="glow"></div>
+  <div class="wrap">
+    <div>
+      <span class="chip">Kling AI · MCP + CLI 0.2.1</span>
+      <h1>Gere vídeos e imagens no Kling <span class="amb">por comando</span></h1>
+      <p class="lead">O Kling AI dentro do seu terminal e do seu assistente de IA: texto→vídeo, imagem→vídeo, geração em lote e dublagem com voz clonada.</p>
+      <div class="cta">
+        <a class="btn" href="#guia">Começar o guia</a>
+        <a class="btn ghost" href="#novidades">Novo: Kling 4.0</a>
+        <a class="btn ghost" href="https://github.com/inematds/klingaimcp" target="_blank" rel="noopener">Ver no GitHub</a>
+      </div>
+    </div>
+    <figure><img src="assets/hero.png" alt="Ilustração de geração de vídeo com IA"></figure>
+  </div>
+</header>
+
+<section id="novidades"><div class="wrap">
+  <span class="chip">Novidades · outubro 2026</span>
+  <h2>Kling 4.0 em preview e CLI 0.2.1</h2>
+  <p class="sub">A documentação da CLI 0.2.1 (28/09) já traz a 4.0. Em 09/10 ela ainda <strong>não estava liberada em todas as contas</strong>: a liberação é conta por conta. Confira na sua com <code>kling who_am_i</code> (não gasta crédito).</p>
+  <div class="grid g3">
+    <div class="card"><h3>🎬 Kling 4.0 Standard</h3><p>Vídeos de <strong>3 a 30 s</strong> (antes 15 s), 720p/1080p, até <strong>10 quadros-chave</strong> (primeiro, intermediários e último). Texto→vídeo, imagem→vídeo e Omni-Ref.</p></div>
+    <div class="card"><h3>⚡ Kling 4.0 Flash</h3><p>De 3 a 20 s, só 720p. Imagem→vídeo só com o primeiro quadro: o último quadro (<code>--tailImage</code>) é recusado.</p></div>
+    <div class="card"><h3>🧩 Omni-Ref na 4.0</h3><p>Mistura até 10 imagens, 5 vídeos e 7 Elements numa geração. Cobrado <strong>por segundo, contando também o vídeo de entrada</strong>.</p></div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h3>💳 E os créditos?</h3><p>A Kling <strong>ainda não publicou</strong> o custo da 4.0. Como referência, a 3.0 vai de ~6 créditos/s (720p sem som) a ~30 créditos/s (4K). Pela CLI/MCP o consumo é o mesmo do site: sem geração grátis fora do pico e sem créditos bônus.</p></div>
+    <div class="card"><h3>⚠️ O que muda na CLI 0.2.1</h3><p><code>--model</code> agora é <strong>obrigatório</strong> e usa o nome completo do <code>who_am_i</code> (ex.: <code>kling-video-v3_0_turbo</code>); <code>--omni</code>/<code>--flash</code> saíram. Novos: <code>omni_ref_video</code>, Elements, Motion Control, <code>--input</code> por quadro e <code>feedback</code>.</p></div>
+  </div>
+<pre style="margin-top:16px"><span class="c"># atualizar e ver se a sua conta já tem a 4.0</span>
+<span class="k">npm i -g @klingai/cli-global@latest</span>
+<span class="k">kling who_am_i</span> | grep -o <span class="s">'kling-video-v4_0[a-z_]*'</span> | sort -u
+
+<span class="c"># primeiro + meio + último quadro (quando liberada)</span>
+<span class="k">kling image_to_video</span> --model kling-video-v4_0 \
+  --input first_image=./first.jpg --input keyframe_1=./meio.jpg \
+  --input tail_image=./last.jpg --poll 300</pre>
+</div></section>
+
+<section id="oque"><div class="wrap">
+  <span class="chip">O que é</span>
+  <h2>O Kling AI fora do site, dentro do seu fluxo</h2>
+  <p class="sub">O Kling oferece duas portas oficiais de automação — o MCP (para assistentes como Claude e Cursor) e o CLI (para terminal, scripts e CI). Este projeto documenta as duas e o pipeline completo de produção de vídeo.</p>
+  <div class="grid g3">
+    <div class="card"><h3>🎬 Vídeo e imagem por prompt</h3><p>text_to_video, image_to_video, text_to_image e image_to_image — os modelos Kling 3.0 (até 4K, multi-shot, áudio nativo), a 4.0 em preview e também Nano Banana 2/Pro e GPT-Image-2 na mesma CLI.</p></div>
+    <div class="card"><h3>⚙️ Automação de verdade</h3><p>Jobs assíncronos com generation_id, poll por status, lote de até 4 variações por request e integração em scripts, Makefiles e pipelines de CI.</p></div>
+    <div class="card"><h3>🎙️ Dublagem com voz clonada</h3><p>Receita completa para trocar o áudio nativo por uma voz clonada mantendo o lip-sync: transcrição com timestamps, TTS multi-tomada e alinhamento por compasso.</p></div>
+  </div>
+</div></section>
+
+<section id="fluxo"><div class="wrap">
+  <span class="chip">Como funciona</span>
+  <h2>Do prompt ao vídeo final</h2>
+  <p class="sub">O fluxo de produção que o guia ensina, de ponta a ponta:</p>
+  <div class="flow">
+    <span>Prompt / imagem</span><span class="arr">→</span>
+    <span>kling image_to_video</span><span class="arr">→</span>
+    <span>poll query_tasks</span><span class="arr">→</span>
+    <span>download (24h!)</span><span class="arr">→</span>
+    <span>dublagem / concat</span><span class="arr">→</span>
+    <span>MP4 final</span>
+  </div>
+</div></section>
+
+<section id="pre"><div class="wrap">
+  <span class="chip">Pré-requisitos</span>
+  <h2>O que você precisa</h2>
+  <p class="sub">Conta no Kling AI (créditos pagos — sem geração off-peak grátis via MCP/CLI), Node.js e ffmpeg para a pós-produção.</p>
+  <div class="grid g3">
+    <div class="card"><h3>Kling CLI</h3><p>Instala global via npm e autentica por OAuth no navegador.</p><pre><span class="c"># instalar + login</span>
+<span class="k">npm i -g @klingai/cli-global</span>
+<span class="k">kling login</span></pre></div>
+    <div class="card"><h3>Ou o MCP</h3><p>Para usar direto no Claude ou Cursor, sem terminal (instale um OU outro, nunca os dois).</p><pre><span class="c"># conector MCP</span>
+"klingai": {"url": <span class="s">"https://kling.ai/mcp"</span>}</pre></div>
+    <div class="card"><h3>ffmpeg</h3><p>Concat, troca de áudio e montagem de trilha de dublagem.</p><pre><span class="c"># checar</span>
+<span class="k">ffmpeg -version</span></pre></div>
+  </div>
+</div></section>
+
+<section id="guia"><div class="wrap">
+  <span class="chip">Guia de uso · passo a passo</span>
+  <h2>Do zero ao primeiro vídeo</h2>
+  <p class="sub">Comandos reais — cada geração retorna um generation_id; o resultado sai como URL que expira em 24h.</p>
+
+  <div class="step"><div class="b">1</div><div>
+    <h3>Descubra os modelos da sua conta</h3>
+    <p>Sempre chame primeiro — retorna os modelos disponíveis e os parâmetros exatos de cada um. Desde a CLI 0.2.1 todo comando de geração exige <code>--model</code> com um nome desta lista.</p>
+<pre><span class="k">kling who_am_i</span>   <span class="c"># modelos, durações, resoluções, parâmetros</span>
+<span class="k">kling account</span>    <span class="c"># plano e créditos</span></pre>
+  </div></div>
+
+  <div class="step"><div class="b">2</div><div>
+    <h3>Gere uma imagem (a cena)</h3>
+    <p>720p/1k gasta menos créditos; suba a resolução só quando o resultado valer.</p>
+<pre><span class="k">kling text_to_image</span> --model kling-image-v3_0 <span class="s">"cidade futurista ao entardecer, luz dourada, cinematográfico"</span> --poll</pre>
+  </div></div>
+
+  <div class="step"><div class="b">3</div><div>
+    <h3>Anime a cena em vídeo</h3>
+    <p>Para 1 imagem, o kling3.0-turbo é o melhor custo-benefício. Fala em PT? Escreva o prompt <em>inteiro</em> em português, com a fala entre aspas.</p>
+<pre><span class="k">kling image_to_video</span> --image cena.png --model kling-video-v3_0_turbo \
+  --resolution 720p <span class="s">"câmera avança lentamente, atmosfera cinematográfica"</span> --poll</pre>
+  </div></div>
+
+  <div class="step"><div class="b">4</div><div>
+    <h3>Acompanhe e baixe na hora</h3>
+    <p>Jobs não podem ser cancelados e as URLs de resultado expiram em 24 horas — salve o generation_id e baixe assim que completar.</p>
+<pre><span class="k">kling query_tasks</span> &lt;generation_id&gt;   <span class="c"># status + works[].url</span>
+<span class="k">curl</span> -o video.mp4 <span class="s">"&lt;works[].url&gt;"</span></pre>
+  </div></div>
+
+  <div class="step"><div class="b">5</div><div>
+    <h3>Monte o vídeo final</h3>
+    <p>Clipes com specs iguais concatenam sem re-encode. Para voz própria, use a receita de dublagem do guia (transcrição com timestamps + TTS por frase + alinhamento por compasso).</p>
+<pre><span class="c"># concatenar clipes</span>
+<span class="k">printf</span> <span class="s">"file 'c1.mp4'\nfile 'c2.mp4'\n"</span> &gt; lista.txt
+<span class="k">ffmpeg</span> -f concat -safe 0 -i lista.txt -c copy final.mp4
+<span class="c"># trocar o áudio pela narração dublada</span>
+<span class="k">ffmpeg</span> -i final.mp4 -i narracao.wav -map 0:v -map 1:a -c:v copy saida.mp4</pre>
+  </div></div>
+</div></section>
+
+<section id="exemplos"><div class="wrap">
+  <span class="chip">Exemplos</span>
+  <h2>Feito com este fluxo</h2>
+  <p class="sub">Avatar falante gerado do zero: thumbnail estática → image_to_video com prompt em PT-BR → dublagem com voz clonada alinhada por compasso.</p>
+  <div class="ex">
+    <figure><img src="assets/ex1.jpg" alt="Frame do vídeo de avatar falante gerado no Kling"><figcaption>Thumbnail estática animada em avatar falante (kling3.0-omni, prompt 100% em PT-BR, lip-sync nativo).</figcaption></figure>
+    <figure><img src="assets/ex2.jpg" alt="Comparativo lado a lado do áudio original e da dublagem"><figcaption>Controle de qualidade: original e dublagem lado a lado, um áudio em cada canal, para auditar o compasso.</figcaption></figure>
+  </div>
+</div></section>
+
+<section id="roadmap"><div class="wrap">
+  <span class="chip">Roadmap</span>
+  <h2>Próximos passos do projeto</h2>
+  <p class="sub">O que já funciona e o que vem por aí.</p>
+  <div class="phase"><div class="tag">Feito</div><div class="d"><strong>Guia MCP + CLI completo</strong><span>Instalação, comandos, tabela de modelos, limites de créditos e dicas de automação.</span></div></div>
+  <div class="phase"><div class="tag">Feito</div><div class="d"><strong>Receita de dublagem com voz clonada</strong><span>Transcrição por palavra, TTS multi-tomada, alinhamento por compasso e verificação automática.</span></div></div>
+  <div class="phase"><div class="tag">Feito</div><div class="d"><strong>Kling 4.0 + CLI 0.2.1 (out/2026)</strong><span>Modelos v4 e v4 Flash, Omni-Ref, Elements, Motion Control e <code>--model</code> obrigatório documentados.</span></div></div>
+  <div class="phase"><div class="tag">Próximo</div><div class="d"><strong>Script único de pipeline</strong><span>Um comando que leva do prompt ao MP4 dublado (gerar → poll → baixar → dublar → montar).</span></div></div>
+  <div class="phase"><div class="tag">Ideia</div><div class="d"><strong>Lote de cenas por roteiro</strong><span>Ler um roteiro decupado e gerar todas as cenas/variações em lote com imageCount.</span></div></div>
+</div></section>
+
+<footer>
+  <div class="wrap">
+    <div class="pill">Kling AI</div><div class="pill">Node.js / npm</div><div class="pill">ffmpeg</div>
+    <p style="margin-top:18px">klingaimcp · guia de integração Kling AI por MCP e CLI ·
+      <a href="https://github.com/inematds/klingaimcp">inematds/klingaimcp</a> ·
+      <a href="https://inema.club">INEMA.CLUB</a></p>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var KEY='klingaimcp-theme';
+    var b=document.body, t=document.getElementById('themeToggle');
+    if(localStorage.getItem(KEY)==='light'){ b.classList.add('light'); t.textContent='☀️'; }
+    t.addEventListener('click',function(){
+      var light=b.classList.toggle('light');
+      t.textContent=light?'☀️':'🌙';
+      localStorage.setItem(KEY, light?'light':'dark');
+    });
+  })();
+</script>
+</body>
+</html>

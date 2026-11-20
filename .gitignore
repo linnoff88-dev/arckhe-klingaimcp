@@ -1,0 +1,7 @@
+.credentials
+*.env
+.env*
+output/
+*.mp4
+*.wav
+*.mp3
