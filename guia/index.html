@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>klingaimcp — Kling AI por MCP e CLI</title>
-<meta name="description" content="Guia de integração do Kling AI via MCP e CLI: gere imagens e vídeos por linha de comando ou assistente de IA, automatize pipelines e dublagem com voz clonada.">
+<meta name="description" content="Guia de integraçêo do Kling AI via MCP e CLI: gere imagens e vídeos por linha de comando ou assistente de IA, automatize pipelines e dublagem com voz clonada.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -122,28 +122,28 @@
     <div>
       <span class="chip">Kling AI · MCP + CLI 0.2.1</span>
       <h1>Gere vídeos e imagens no Kling <span class="amb">por comando</span></h1>
-      <p class="lead">O Kling AI dentro do seu terminal e do seu assistente de IA: texto→vídeo, imagem→vídeo, geração em lote e dublagem com voz clonada.</p>
+      <p class="lead">O Kling AI dentro do seu terminal e do seu assistente de IA: texto→vídeo, imagem→vídeo, geraçêo em lote e dublagem com voz clonada.</p>
       <div class="cta">
         <a class="btn" href="#guia">Começar o guia</a>
         <a class="btn ghost" href="#novidades">Novo: Kling 4.0</a>
         <a class="btn ghost" href="https://github.com/inematds/klingaimcp" target="_blank" rel="noopener">Ver no GitHub</a>
       </div>
     </div>
-    <figure><img src="assets/hero.png" alt="Ilustração de geração de vídeo com IA"></figure>
+    <figure><img src="assets/hero.png" alt="Ilustraçêo de geraçêo de vídeo com IA"></figure>
   </div>
 </header>
 
 <section id="novidades"><div class="wrap">
   <span class="chip">Novidades · outubro 2026</span>
   <h2>Kling 4.0 em preview e CLI 0.2.1</h2>
-  <p class="sub">A documentação da CLI 0.2.1 (28/09) já traz a 4.0. Em 09/10 ela ainda <strong>não estava liberada em todas as contas</strong>: a liberação é conta por conta. Confira na sua com <code>kling who_am_i</code> (não gasta crédito).</p>
+  <p class="sub">A documentaçêo da CLI 0.2.1 (28/09) já traz a 4.0. Em 09/10 ela ainda <strong>nêo estava liberada em todas as contas</strong>: a liberaçêo é conta por conta. Confira na sua com <code>kling who_am_i</code> (nêo gasta crédito).</p>
   <div class="grid g3">
     <div class="card"><h3>🎬 Kling 4.0 Standard</h3><p>Vídeos de <strong>3 a 30 s</strong> (antes 15 s), 720p/1080p, até <strong>10 quadros-chave</strong> (primeiro, intermediários e último). Texto→vídeo, imagem→vídeo e Omni-Ref.</p></div>
     <div class="card"><h3>⚡ Kling 4.0 Flash</h3><p>De 3 a 20 s, só 720p. Imagem→vídeo só com o primeiro quadro: o último quadro (<code>--tailImage</code>) é recusado.</p></div>
-    <div class="card"><h3>🧩 Omni-Ref na 4.0</h3><p>Mistura até 10 imagens, 5 vídeos e 7 Elements numa geração. Cobrado <strong>por segundo, contando também o vídeo de entrada</strong>.</p></div>
+    <div class="card"><h3>🧩 Omni-Ref na 4.0</h3><p>Mistura até 10 imagens, 5 vídeos e 7 Elements numa geraçêo. Cobrado <strong>por segundo, contando também o vídeo de entrada</strong>.</p></div>
   </div>
   <div class="grid g2" style="margin-top:16px">
-    <div class="card"><h3>💳 E os créditos?</h3><p>A Kling <strong>ainda não publicou</strong> o custo da 4.0. Como referência, a 3.0 vai de ~6 créditos/s (720p sem som) a ~30 créditos/s (4K). Pela CLI/MCP o consumo é o mesmo do site: sem geração grátis fora do pico e sem créditos bônus.</p></div>
+    <div class="card"><h3>💳 E os créditos?</h3><p>A Kling <strong>ainda nêo publicou</strong> o custo da 4.0. Como referência, a 3.0 vai de ~6 créditos/s (720p sem som) a ~30 créditos/s (4K). Pela CLI/MCP o consumo é o mesmo do site: sem geraçêo grátis fora do pico e sem créditos bônus.</p></div>
     <div class="card"><h3>⚠️ O que muda na CLI 0.2.1</h3><p><code>--model</code> agora é <strong>obrigatório</strong> e usa o nome completo do <code>who_am_i</code> (ex.: <code>kling-video-v3_0_turbo</code>); <code>--omni</code>/<code>--flash</code> saíram. Novos: <code>omni_ref_video</code>, Elements, Motion Control, <code>--input</code> por quadro e <code>feedback</code>.</p></div>
   </div>
 <pre style="margin-top:16px"><span class="c"># atualizar e ver se a sua conta já tem a 4.0</span>
@@ -159,18 +159,18 @@
 <section id="oque"><div class="wrap">
   <span class="chip">O que é</span>
   <h2>O Kling AI fora do site, dentro do seu fluxo</h2>
-  <p class="sub">O Kling oferece duas portas oficiais de automação — o MCP (para assistentes como Claude e Cursor) e o CLI (para terminal, scripts e CI). Este projeto documenta as duas e o pipeline completo de produção de vídeo.</p>
+  <p class="sub">O Kling oferece duas portas oficiais de automaçêo — o MCP (para assistentes como Claude e Cursor) e o CLI (para terminal, scripts e CI). Este projeto documenta as duas e o pipeline completo de produçêo de vídeo.</p>
   <div class="grid g3">
     <div class="card"><h3>🎬 Vídeo e imagem por prompt</h3><p>text_to_video, image_to_video, text_to_image e image_to_image — os modelos Kling 3.0 (até 4K, multi-shot, áudio nativo), a 4.0 em preview e também Nano Banana 2/Pro e GPT-Image-2 na mesma CLI.</p></div>
-    <div class="card"><h3>⚙️ Automação de verdade</h3><p>Jobs assíncronos com generation_id, poll por status, lote de até 4 variações por request e integração em scripts, Makefiles e pipelines de CI.</p></div>
-    <div class="card"><h3>🎙️ Dublagem com voz clonada</h3><p>Receita completa para trocar o áudio nativo por uma voz clonada mantendo o lip-sync: transcrição com timestamps, TTS multi-tomada e alinhamento por compasso.</p></div>
+    <div class="card"><h3>⚙️ Automaçêo de verdade</h3><p>Jobs assíncronos com generation_id, poll por status, lote de até 4 variações por request e integraçêo em scripts, Makefiles e pipelines de CI.</p></div>
+    <div class="card"><h3>🎙️ Dublagem com voz clonada</h3><p>Receita completa para trocar o áudio nativo por uma voz clonada mantendo o lip-sync: transcriçêo com timestamps, TTS multi-tomada e alinhamento por compasso.</p></div>
   </div>
 </div></section>
 
 <section id="fluxo"><div class="wrap">
   <span class="chip">Como funciona</span>
   <h2>Do prompt ao vídeo final</h2>
-  <p class="sub">O fluxo de produção que o guia ensina, de ponta a ponta:</p>
+  <p class="sub">O fluxo de produçêo que o guia ensina, de ponta a ponta:</p>
   <div class="flow">
     <span>Prompt / imagem</span><span class="arr">→</span>
     <span>kling image_to_video</span><span class="arr">→</span>
@@ -184,7 +184,7 @@
 <section id="pre"><div class="wrap">
   <span class="chip">Pré-requisitos</span>
   <h2>O que você precisa</h2>
-  <p class="sub">Conta no Kling AI (créditos pagos — sem geração off-peak grátis via MCP/CLI), Node.js e ffmpeg para a pós-produção.</p>
+  <p class="sub">Conta no Kling AI (créditos pagos — sem geraçêo off-peak grátis via MCP/CLI), Node.js e ffmpeg para a pós-produçêo.</p>
   <div class="grid g3">
     <div class="card"><h3>Kling CLI</h3><p>Instala global via npm e autentica por OAuth no navegador.</p><pre><span class="c"># instalar + login</span>
 <span class="k">npm i -g @klingai/cli-global</span>
@@ -199,18 +199,18 @@
 <section id="guia"><div class="wrap">
   <span class="chip">Guia de uso · passo a passo</span>
   <h2>Do zero ao primeiro vídeo</h2>
-  <p class="sub">Comandos reais — cada geração retorna um generation_id; o resultado sai como URL que expira em 24h.</p>
+  <p class="sub">Comandos reais — cada geraçêo retorna um generation_id; o resultado sai como URL que expira em 24h.</p>
 
   <div class="step"><div class="b">1</div><div>
     <h3>Descubra os modelos da sua conta</h3>
-    <p>Sempre chame primeiro — retorna os modelos disponíveis e os parâmetros exatos de cada um. Desde a CLI 0.2.1 todo comando de geração exige <code>--model</code> com um nome desta lista.</p>
+    <p>Sempre chame primeiro — retorna os modelos disponíveis e os parâmetros exatos de cada um. Desde a CLI 0.2.1 todo comando de geraçêo exige <code>--model</code> com um nome desta lista.</p>
 <pre><span class="k">kling who_am_i</span>   <span class="c"># modelos, durações, resoluções, parâmetros</span>
 <span class="k">kling account</span>    <span class="c"># plano e créditos</span></pre>
   </div></div>
 
   <div class="step"><div class="b">2</div><div>
     <h3>Gere uma imagem (a cena)</h3>
-    <p>720p/1k gasta menos créditos; suba a resolução só quando o resultado valer.</p>
+    <p>720p/1k gasta menos créditos; suba a resoluçêo só quando o resultado valer.</p>
 <pre><span class="k">kling text_to_image</span> --model kling-image-v3_0 <span class="s">"cidade futurista ao entardecer, luz dourada, cinematográfico"</span> --poll</pre>
   </div></div>
 
@@ -223,18 +223,18 @@
 
   <div class="step"><div class="b">4</div><div>
     <h3>Acompanhe e baixe na hora</h3>
-    <p>Jobs não podem ser cancelados e as URLs de resultado expiram em 24 horas — salve o generation_id e baixe assim que completar.</p>
+    <p>Jobs nêo podem ser cancelados e as URLs de resultado expiram em 24 horas — salve o generation_id e baixe assim que completar.</p>
 <pre><span class="k">kling query_tasks</span> &lt;generation_id&gt;   <span class="c"># status + works[].url</span>
 <span class="k">curl</span> -o video.mp4 <span class="s">"&lt;works[].url&gt;"</span></pre>
   </div></div>
 
   <div class="step"><div class="b">5</div><div>
     <h3>Monte o vídeo final</h3>
-    <p>Clipes com specs iguais concatenam sem re-encode. Para voz própria, use a receita de dublagem do guia (transcrição com timestamps + TTS por frase + alinhamento por compasso).</p>
+    <p>Clipes com specs iguais concatenam sem re-encode. Para voz própria, use a receita de dublagem do guia (transcriçêo com timestamps + TTS por frase + alinhamento por compasso).</p>
 <pre><span class="c"># concatenar clipes</span>
 <span class="k">printf</span> <span class="s">"file 'c1.mp4'\nfile 'c2.mp4'\n"</span> &gt; lista.txt
 <span class="k">ffmpeg</span> -f concat -safe 0 -i lista.txt -c copy final.mp4
-<span class="c"># trocar o áudio pela narração dublada</span>
+<span class="c"># trocar o áudio pela narraçêo dublada</span>
 <span class="k">ffmpeg</span> -i final.mp4 -i narracao.wav -map 0:v -map 1:a -c:v copy saida.mp4</pre>
   </div></div>
 </div></section>
@@ -253,8 +253,8 @@
   <span class="chip">Roadmap</span>
   <h2>Próximos passos do projeto</h2>
   <p class="sub">O que já funciona e o que vem por aí.</p>
-  <div class="phase"><div class="tag">Feito</div><div class="d"><strong>Guia MCP + CLI completo</strong><span>Instalação, comandos, tabela de modelos, limites de créditos e dicas de automação.</span></div></div>
-  <div class="phase"><div class="tag">Feito</div><div class="d"><strong>Receita de dublagem com voz clonada</strong><span>Transcrição por palavra, TTS multi-tomada, alinhamento por compasso e verificação automática.</span></div></div>
+  <div class="phase"><div class="tag">Feito</div><div class="d"><strong>Guia MCP + CLI completo</strong><span>Instalaçêo, comandos, tabela de modelos, limites de créditos e dicas de automaçêo.</span></div></div>
+  <div class="phase"><div class="tag">Feito</div><div class="d"><strong>Receita de dublagem com voz clonada</strong><span>Transcriçêo por palavra, TTS multi-tomada, alinhamento por compasso e verificaçêo automática.</span></div></div>
   <div class="phase"><div class="tag">Feito</div><div class="d"><strong>Kling 4.0 + CLI 0.2.1 (out/2026)</strong><span>Modelos v4 e v4 Flash, Omni-Ref, Elements, Motion Control e <code>--model</code> obrigatório documentados.</span></div></div>
   <div class="phase"><div class="tag">Próximo</div><div class="d"><strong>Script único de pipeline</strong><span>Um comando que leva do prompt ao MP4 dublado (gerar → poll → baixar → dublar → montar).</span></div></div>
   <div class="phase"><div class="tag">Ideia</div><div class="d"><strong>Lote de cenas por roteiro</strong><span>Ler um roteiro decupado e gerar todas as cenas/variações em lote com imageCount.</span></div></div>
@@ -263,7 +263,7 @@
 <footer>
   <div class="wrap">
     <div class="pill">Kling AI</div><div class="pill">Node.js / npm</div><div class="pill">ffmpeg</div>
-    <p style="margin-top:18px">klingaimcp · guia de integração Kling AI por MCP e CLI ·
+    <p style="margin-top:18px">klingaimcp · guia de integraçêo Kling AI por MCP e CLI ·
       <a href="https://github.com/inematds/klingaimcp">inematds/klingaimcp</a> ·
       <a href="https://inema.club">INEMA.CLUB</a></p>
   </div>
