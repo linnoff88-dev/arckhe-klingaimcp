@@ -12,7 +12,7 @@ O Kling MCP é um adaptador de protocolo que permite que assistentes de IA de pr
 
 Uma vez configurado e autorizado, você pode usar linguagem natural para instruir seu assistente de IA a criar imagens e vídeos com o Kling, recebendo os resultados direto no assistente.
 
-Exemplo: *"Transforme esta imagem em um vídeo cinematográfico de 5 segundos com movimento de câmera."*
+Exemplo: *"Transforme esta imagem em um vídeo cARCKHÉtográfico de 5 segundos com movimento de câmera."*
 
 ### 2. O que é o Kling CLI?
 
@@ -225,7 +225,7 @@ O áudio nativo do Kling (`enable_audio`) em PT-BR sai com sotaque forte e palav
 
 1. **Prompt 100% em português** (instruçêo + fala entre aspas): nêo conserta a voz, mas faz a **boca articular as frases certas nos tempos certos** — pré-requisito de qualquer dublagem.
 2. **Voice conversion** (troca só o timbre): lip-sync perfeito, mas herda a pronúncia ruim. Use apenas se a fala original já saiu aceitável.
-3. **Dublagem por compasso** (o método vencedor): regrava a fala com voz clonada em português correto e assenta cada pedaço na batida da boca. Ferramenta pronta: projeto **[dublagem-compasso](https://github.com/inematds/dublagem-compasso)** (e skill de mesmo nome no Claude Code).
+3. **Dublagem por compasso** (o método vencedor): regrava a fala com voz clonada em português correto e assenta cada pedaço na batida da boca. Ferramenta pronta: projeto **[dublagem-compasso](https://github.com/linnoff88-dev/dublagem-compasso)** (e skill de mesmo nome no Claude Code).
 
 ```bash
 # dublar um clipe do Kling com voz clonada, alinhado ao compasso da boca
